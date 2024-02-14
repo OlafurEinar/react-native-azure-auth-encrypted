@@ -1,6 +1,6 @@
 {
   "name": "react-native-azure-auth",
-  "version": "1.0",
+  "version": "1.0.0",
   "description": "Azure AD authentication in React Native using encrypted storage",
   "main": "src/index.js",
   "types": "types/index.d.ts",
