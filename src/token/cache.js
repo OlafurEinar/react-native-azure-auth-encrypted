@@ -102,8 +102,8 @@ export default class TokenCache {
                 const scopeFormKey = BaseTokenItem.scopeFromKey(key)
                 if (scopeFormKey && key.startsWith(accessTokenKeyPrefix) && scope.isSubsetOf(scopeFormKey)) {
                     const token = await Keychain.getGenericPassword({ service: key })
-                    this.cache[key] = token
-                    return AccessTokenItem.fromJson(token)
+                    this.cache[key] = token && token.password
+                    return AccessTokenItem.fromJson(token && token.password)
                 }
             }
         }
@@ -119,7 +119,7 @@ export default class TokenCache {
         }
         if (this.persistent) {
             const token = await Keychain.getGenericPassword({ service: key })
-            refreshToken = RefreshTokenItem.fromJson(token)
+            refreshToken = RefreshTokenItem.fromJson(token && token.password)
         }
         if ((this.cache[key] || this.persistent) && !refreshToken) {
             // broken token was saved
