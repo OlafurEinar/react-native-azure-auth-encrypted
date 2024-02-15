@@ -56,7 +56,7 @@ export default class TokenCache {
         this.cache[key] = accessToken.toString()
         if (this.persistent) {
             AsyncStorage.setItem(key, key)
-            Keychain.setGenericPassword(key, accessToken.toString())
+            Keychain.setGenericPassword(key, accessToken.toString(), { service: key })
             //.catch(err => { return err /* log error?*/ })
         }
         return accessToken
@@ -68,7 +68,7 @@ export default class TokenCache {
         this.cache[key] = refreshToken.toString()
         if (this.persistent) {
             AsyncStorage.setItem(key, key)
-            Keychain.setGenericPassword(key, refreshToken.toString())
+            Keychain.setGenericPassword(key, refreshToken.toString(), { service: key })
             //.catch(err => { return err /* log error?*/ })
         }
         return refreshToken
