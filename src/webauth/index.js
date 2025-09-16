@@ -58,7 +58,7 @@ export default class WebAuth {
             ...(extraQueryParameters || {}),
             clientId,
             scope: scope.toString(),
-            responseType: 'code' + (scope.toString().includes('openid') ? ' id_token': ''),
+            responseType: 'code', // + (scope.toString().includes('openid') ? ' id_token': ''),
             response_mode: 'fragment', // 'query' is unsafe and not supported, the hash fragment is also default
             state: state,
             nonce: nonce,

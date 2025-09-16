@@ -3,6 +3,7 @@ import { validate } from '../utils/validate'
 import AccessTokenItem from './accessTokenItem'
 import RefreshTokenItem from './refreshTokenItem'
 import BaseTokenItem from './baseTokenItem'
+import * as Keychain from 'react-native-keychain';
 
 /**
  * Token persistent cache
@@ -11,7 +12,7 @@ import BaseTokenItem from './baseTokenItem'
  *
  * @param {Object} input - init parameters
  * @param {String} input.clientId
- * @param {Boolean} input.persistent - if true - the RN `AsyncStorage` is used for persistent caching,
+ * @param {Boolean} input.persistent - if true - react native keychain is used for persistent caching,
  *         otherwise only the class instance. (default: true)
  *
  * @class TokenCache
@@ -53,7 +54,8 @@ export default class TokenCache {
         })
         this.cache[key] = accessToken.toString()
         if (this.persistent) {
-            AsyncStorage.setItem(key, accessToken.toString())
+            AsyncStorage.setItem(key, key)
+            Keychain.setGenericPassword(key, accessToken.toString(), { service: key })
             //.catch(err => { return err /* log error?*/ })
         }
         return accessToken
@@ -64,7 +66,8 @@ export default class TokenCache {
         const key = refreshToken.tokenKey()
         this.cache[key] = refreshToken.toString()
         if (this.persistent) {
-            AsyncStorage.setItem(key, refreshToken.toString())
+            AsyncStorage.setItem(key, key)
+            Keychain.setGenericPassword(key, refreshToken.toString(), { service: key })
             //.catch(err => { return err /* log error?*/ })
         }
         return refreshToken
@@ -96,9 +99,9 @@ export default class TokenCache {
             for (const key of keys) {
                 const scopeFormKey = BaseTokenItem.scopeFromKey(key)
                 if (scopeFormKey && key.startsWith(accessTokenKeyPrefix) && scope.isSubsetOf(scopeFormKey)) {
-                    const token = await AsyncStorage.getItem(key)
-                    this.cache[key] = token
-                    return AccessTokenItem.fromJson(token)
+                    const token = await Keychain.getGenericPassword({ service: key })
+                    this.cache[key] = token && token.password
+                    return AccessTokenItem.fromJson(token && token.password)
                 }
             }
         }
@@ -113,8 +116,8 @@ export default class TokenCache {
             refreshToken = RefreshTokenItem.fromJson(this.cache[key])
         }
         if (this.persistent) {
-            const token = await AsyncStorage.getItem(key)
-            refreshToken = RefreshTokenItem.fromJson(token)
+            const token = await Keychain.getGenericPassword({ service: key })
+            refreshToken = RefreshTokenItem.fromJson(token && token.password)
         }
         if ((this.cache[key] || this.persistent) && !refreshToken) {
             // broken token was saved

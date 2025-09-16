@@ -1,7 +1,7 @@
 {
-  "name": "react-native-azure-auth",
-  "version": "1.9.0",
-  "description": "An React Native module implements Azure AD V2.0 authentication flow",
+  "name": "react-native-azure-auth-encrypted",
+  "version": "1.0.4",
+  "description": "Azure AD authentication in React Native using encrypted storage",
   "main": "src/index.js",
   "types": "types/index.d.ts",
   "scripts": {
@@ -23,9 +23,13 @@
     "oauth2"
   ],
   "repository": {
-    "url": "https://github.com/vmurin/react-native-azure-auth.git"
+    "url": "https://github.com/OlafurEinar/react-native-azure-auth-encrypted.git",
+    "baseUrl": "https://github.com/OlafurEinar/react-native-azure-auth-encrypted"
   },
-  "author": "vmurin",
+  "author": {
+    "name": "olieinar",
+    "email": "olieinar@hotmail.com"
+  },
   "license": "MIT",
   "devDependencies": {
     "@babel/core": "^7.24.7",
@@ -54,10 +58,12 @@
     "base-64": "^1.0.0",
     "js-base64": "^3.7.7",
     "jwt-decode": "^4.0.0",
+    "react-native-keychain": "^10.0.0",
     "url": "^0.11.3"
   },
   "peerDependencies": {
     "react": "^16.11.0 || ^17 || ^18 || ^19",
     "react-native": ">=0.64.0 <1.0.x"
-  }
+  },
+  "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
 }
